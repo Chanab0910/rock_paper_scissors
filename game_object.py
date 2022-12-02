@@ -264,9 +264,10 @@ class Game:
 
     def report_score(self):
         """ Returns a string with the current scores """
-        score_msg = f"After {self.current_round} rounds:\n"
-        score_msg += "\n".join([f"{player.name} has scored {player.score}" for player in self.players])
-        return score_msg
+        msg = f"After {self.current_round} rounds:\n"
+        msg += f"{self.players[0].name} has scored {self.players[0].score}\n"
+        msg += f"Computer has scored {self.players[1].score}"
+        return msg
 
     def report_winner(self):
         """ Returns a message with the overall winner """
