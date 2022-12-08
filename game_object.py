@@ -258,6 +258,7 @@ class Game:
 
             if self.round_result == "draw":
                 report_msg += "Round was a draw"
+                return report_msg
             elif self.round_result == "win":
                 report_msg += f'{self.round_winner.name} won this round'
         return report_msg
