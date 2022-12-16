@@ -31,16 +31,27 @@ class GUI(tk.Frame):
         self.Quit.grid(row=4, column=0)
         self.Play_Game_Button.grid(row=4, column=1)
 
-
 class NewWindow(tk.Toplevel):
     def __init__(self, controller):
         super().__init__(controller)
-        self.Title = tk.Label(self, text='Welcome to RPSLS', font=100)
+        self.Title = tk.Label(self, text='RPSLS', font=100, fg='red')
+        self.Explain_button_press = tk.Label(self, text='Press on the option you would like to play')
+        self.Air = tk.Label(self, text=' ')
+        self.Rock_button = tk.Button(self, text='Rock')
+        self.Paper_button = tk.Button(self, text='Paper')
+        self.Scissor_button = tk.Button(self, text='Scissors')
+
+
         self.place_widgets()
 
     def place_widgets(self):
         # This code creates the widgets and grids them
-        self.Title.grid(row=0, columnspan=2)
+        self.Title.grid(row=0, columnspan=3)
+        self.Explain_button_press.grid(row=1, columnspan=3)
+        self.Air.grid(row=2)
+        self.Rock_button.grid(row=3, column=0)
+        self.Paper_button.grid(row=3, column=1)
+        self.Scissor_button.grid(row=3, column=2)
 
 
 
