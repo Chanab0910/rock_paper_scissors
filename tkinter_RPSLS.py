@@ -16,15 +16,13 @@ class GUI(tk.Frame):
         self.Name_input = tk.Entry(self)
         self.Name_button = tk.Button(self, text='Press to enter name', command=self.names)
         self.Round_num = tk.Label(self, text='Enter how many rounds you want to play: ')
-        values = ['1', '2', '3', '4', '5']
+        values = ['1', '3', '5']
         self.Round_combobox = ttk.Combobox(self, value=values)
         self.Round_combobox.current(0)
         self.Round_combobox.bind("<<ComboboxSelected>>", self.round_amount)
         self.Air = tk.Label(self, text=' ')
         self.Quit = tk.Button(self, text='Quit', command=quit)
         self.Play_Game_Button = tk.Button(self, text='Play Game', command=partial(NewWindow, self))
-
-        self.game.add_human_player()
 
         self.place_widgets()
 
@@ -44,32 +42,41 @@ class GUI(tk.Frame):
         self.game.set_max_rounds(int(self.Round_combobox.get()))
 
     def names(self):
-        self.game.players[0] = self.Name_input.get()
+        self.game.add_human_player(self.Name_input.get())
 
 
 class NewWindow(tk.Toplevel):
     def __init__(self, controller):
         super().__init__(controller)
         self.controller = controller
-        self.game = Game()
+        self.game = controller.game
+        self.game.add_computer_player()
+        self.player = self.game.players[0]
+        self.computer = self.game.players[1]
+        self.report_round = tk.StringVar()
+        self.report_score = tk.StringVar()
+        self.report_winner = tk.StringVar()
+        self.game.current_round = 1
 
         self.Title = tk.Label(self, text='RPSLS', font=100, fg='red')
         self.Explain_button_press = tk.Label(self, text='Press on the option you would like to play')
         self.Air = tk.Label(self, text=' ')
 
         self.options_label = tk.Label(self, text='Pick your option')
-        options = ['Rock', 'Paper', 'Scissors']
+        options = ['Rock', 'Paper', 'Scissors', 'Lizard', 'Spock']
         self.Options_combobox = ttk.Combobox(self, value=options)
         self.Options_combobox.current(0)
         self.Options_combobox.bind("<<ComboboxSelected>>", self.choice)
 
-        self.Round = tk.Label(self, text='Round:1')
+        self.Round = tk.Label(self, textvariable=self.report_round)
         self.count = 1
         self.Computer_chose_this = tk.Label(self, text=' ')
 
-        self.Score1 = tk.Label(self, text=0)
-        self.Score2 = tk.Label(self, text=0)
-        self.Final_score = tk.Label(self, text='')
+        self.Score = tk.Label(self, textvariable=self.report_score)
+
+        self.Final_score = tk.Label(self, textvariable=self.report_winner)
+
+
         self.Quit = tk.Button(self, text='Quit', command=quit)
 
         self.place_widgets()
@@ -84,29 +91,32 @@ class NewWindow(tk.Toplevel):
 
         self.Round.grid(row=4, column=0)
         self.Computer_chose_this.grid(row=5, column=0)
-        self.Score1.grid(row=6, column=0)
-        self.Score2.grid(row=6, column=1)
-        self.Final_score.grid(row=6,column=2)
+        self.Score.grid(row=6, column=0)
+        self.Final_score.grid(row=6, column=2)
+
+
         self.Quit.grid(row=7, column=0)
 
     def choice(self, options):
-            HumanPlayer.choose_object(self, self.Options_combobox.get())
-            self.game.add_computer_player()
-            self.computers_choice = game_objects.RPS_OBJECTS[randint(0, 2)]
-            self.game.players[0] = self.computers_choice
 
-            self.Round.config(text=f'Round:{self.count}')
-            self.count+=1
-            self.Computer_chose_this.config(text=f'Computer chose: {self.computers_choice}')
-
-
-
-        # self.Computer_chose_this.config(text=f'Computer chose {game_objects.RPS_OBJECTS[randint(0, 2)]}')
+        if self.player.score < self.game.max_rounds or self.computer.score < self.game.max_rounds :
+            print(self.player.score)
+            self.player.choose_object(self.Options_combobox.get())
+            self.computer.choose_object()
+            self.game.find_winner()
+            self.report_round.set(self.controller.game.report_round())
+            self.report_score.set(self.controller.game.report_score())
+            self.game.current_round += 1
 
 
-def create_game():
-    game = Game()
-    return game
+
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
