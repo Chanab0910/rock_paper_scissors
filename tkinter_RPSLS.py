@@ -1,8 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from random import randint
-import game_objects
-from game_objects import Game, PlayerObject, RPS_OBJECTS, RPS_WIN_DICT, ComputerPlayer, HumanPlayer, Player
+from game_object_dales import Game, PlayerObject, RPS_OBJECTS, RPS_WIN_DICT, ComputerPlayer, HumanPlayer, Player
 from functools import partial
 
 
@@ -15,7 +13,7 @@ class GUI(tk.Frame):
         self.Name = tk.Label(self, text='Enter your name: ')
         self.Name_input = tk.Entry(self)
         self.Name_button = tk.Button(self, text='Press to enter name', command=self.names)
-        self.Round_num = tk.Label(self, text='Enter how many rounds you want to play: ')
+        self.Round_num = tk.Label(self, text='How many rounds: ')
         values = ['1', '3', '5']
         self.Round_combobox = ttk.Combobox(self, value=values)
         self.Round_combobox.current(0)
@@ -99,7 +97,7 @@ class NewWindow(tk.Toplevel):
 
     def choice(self, options):
 
-        if self.player.score < self.game.max_rounds or self.computer.score < self.game.max_rounds :
+        if self.game.is_finished() == False:
             print(self.player.score)
             self.player.choose_object(self.Options_combobox.get())
             self.computer.choose_object()
@@ -124,3 +122,4 @@ if __name__ == '__main__':
     main_frame = GUI(root)
     main_frame.pack()
     root.mainloop()
+
