@@ -8,7 +8,6 @@ Classes
     HumanPlayer (subclass of Player)
     ComputerPlayer (subclass of Player
     Game
-
 """
 import random
 
@@ -20,7 +19,7 @@ RPSLS_WIN_DICT = {'rock': ['scissors', 'lizard'],
                   'lizard': ['paper', 'spock'],
                   'spock': ['rock', 'scissors'],
                   }
-RPS_OBJECTS = ('rock', 'paper', 'scissors')
+RPS_OBJECTS = ['rock', 'paper', 'scissors']
 RPS_WIN_DICT = {'rock': ['scissors'],
                 'scissors': ['paper'],
                 'paper': ['rock'],
@@ -55,7 +54,6 @@ class PlayerObject:
     def __init__(self, name):
         """
         Constructs the attributes for the PlayerObject
-
         Parameters
         ----------
             name: str
@@ -109,7 +107,6 @@ class PlayerObject:
 class Player:
     """
     A class to represent a player of the game
-
     Attributes
     __________
         name: str
@@ -248,7 +245,7 @@ class Game:
 
     def is_finished(self):
         """ Checks if game is finished """
-        return self.current_round >= self.max_rounds
+        return self.current_round > self.max_rounds
 
     def reset(self):
         """ Resets the whole game, setting current round to 0 and player scores to 0"""
@@ -291,4 +288,3 @@ class Game:
         else:
             win_msg = "Game is drawn"
         return win_msg
-
