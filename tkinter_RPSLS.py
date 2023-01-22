@@ -12,7 +12,7 @@ class GUI(tk.Frame):
         self.Title = tk.Label(self, text='Welcome to RPSLS', font=100)
         self.Name = tk.Label(self, text='Enter your name: ')
         self.Name_input = tk.Entry(self)
-        self.Name_button = tk.Button(self, text='Press to enter name', command=self.names)
+
         self.Round_num = tk.Label(self, text='How many rounds: ')
         values = ['1', '3', '5']
         self.Round_combobox = ttk.Combobox(self, value=values)
@@ -20,7 +20,8 @@ class GUI(tk.Frame):
         self.Round_combobox.bind("<<ComboboxSelected>>", self.round_amount)
         self.Air = tk.Label(self, text=' ')
         self.Quit = tk.Button(self, text='Quit', command=quit)
-        self.Play_Game_Button = tk.Button(self, text='Play Game', command=partial(NewWindow, self))
+        self.Play_Game_Button = tk.Button(self, text='Play Game',
+                                          command=lambda: [self.names(), partial(NewWindow, self)()])
 
         self.place_widgets()
 
@@ -29,7 +30,7 @@ class GUI(tk.Frame):
         self.Title.grid(row=0, columnspan=2)
         self.Name.grid(row=1, column=0)
         self.Name_input.grid(row=1, column=1)
-        self.Name_button.grid(row=1, column=2)
+
         self.Round_num.grid(row=2, column=0)
         self.Round_combobox.grid(row=2, column=1)
         self.Air.grid(row=3)
@@ -74,8 +75,8 @@ class NewWindow(tk.Toplevel):
 
         self.Final_score = tk.Label(self, textvariable=self.report_winner)
 
-
         self.Quit = tk.Button(self, text='Quit', command=quit)
+
 
         self.place_widgets()
 
@@ -87,13 +88,13 @@ class NewWindow(tk.Toplevel):
         self.options_label.grid(row=3, column=0)
         self.Options_combobox.grid(row=3, column=1)
 
-        self.Round.grid(row=4, column=0)
-        self.Computer_chose_this.grid(row=5, column=0)
-        self.Score.grid(row=6, column=0)
-        self.Final_score.grid(row=6, column=2)
+        self.Round.grid(row=4, columnspan=2)
+        self.Computer_chose_this.grid(row=5, columnspan=2)
+        self.Score.grid(row=6, columnspan=2)
+        self.Final_score.grid(row=7, columnspan=2)
 
+        self.Quit.grid(row=8, column=0)
 
-        self.Quit.grid(row=7, column=0)
 
     def choice(self, options):
 
@@ -106,13 +107,8 @@ class NewWindow(tk.Toplevel):
             self.report_score.set(self.controller.game.report_score())
             self.game.current_round += 1
 
-
-
-
-
-
-
-
+        if self.game.is_finished() == True:
+            self.report_winner.set(self.controller.game.report_winner())
 
 
 
